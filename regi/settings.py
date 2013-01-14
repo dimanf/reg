@@ -1,5 +1,9 @@
 # Django settings for regi project.
 
+import os
+
+PATH = os.path.abspath(os.path.dirname(__file__))
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -46,18 +50,19 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PATH, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
+FILEBROWSER_MEDIA_URL = '/static/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(PATH, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -65,6 +70,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.join(PATH, 'media'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -109,6 +115,23 @@ TEMPLATE_DIRS = ("/home/dmitry/Projects/test_reg/regi/regi/templates",
     # Don't forget to use absolute paths, not relative paths.
 )
 
+# Session engine
+SESSION_ENGINE = 'redis_sessions.session'
+SESSION_REDIS_HOST = 'localhost'
+SESSION_REDIS_PORT = 6379
+SESSION_REDIS_DB = 0
+SESSION_REDIS_PASSWORD = ''
+SESSION_REDIS_PREFIX = 'session'
+
+# Mail server
+AUTH_USER_EMAIL_UNIQUE = True
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = 'hooper_spd@mail.ru'
+EMAIL_HOST_PASSWORD = 'q12w12'
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'hooper_spd@mail.ru'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,7 +141,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'filebrowser',
+    'tinymce',
     'regi.myusermodel',
+    'regi.news',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -155,7 +181,7 @@ LOGGING = {
 }
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
+    "django.contrib.auth.context_processors.auth",    
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
@@ -164,3 +190,45 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     "django.contrib.messages.context_processors.messages",   
 )
+
+TINYMCE_DEFAULT_CONFIG={
+    'theme' : "advanced",    
+    'language' : 'ru',
+    'plugins' : "paste",                
+    'theme_advanced_buttons1' : "styleselect,formatselect,fontselect,fontsizeselect,|,justifyleft,justifycenter,justifyright,justifyfull",    
+    'theme_advanced_buttons2' : "pasteword,bullist,numlist,|,link,unlink,anchor,image,|,bold,italic,underline,|,forecolor,backcolor,|,cut,copy,paste,pastetext,pasteword,|,undo,redo,|,link,unlink,cleanup,code,",
+    'theme_advanced_toolbar_location' : "top",
+    'theme_advanced_toolbar_align' : "left",
+    'theme_advanced_statusbar_location' : "bottom",
+    'theme_advanced_resizing' : True,
+    'table_default_cellpadding': 2,
+    'table_default_cellspacing': 2,
+    'cleanup_on_startup' : False,
+    'cleanup' : False,
+    'paste_auto_cleanup_on_paste' : False,
+    'paste_block_drop' : False,
+    'paste_remove_spans' : False,
+    'paste_strip_class_attributes' : False,
+    'paste_retain_style_properties' : "",
+    'forced_root_block' : False,
+    'force_br_newlines' : False,
+    'force_p_newlines' : False,
+    'remove_linebreaks' : False,
+    'convert_newlines_to_brs' : False,
+    'inline_styles' : False,
+    'relative_urls' : False,
+    'formats' : {
+        'alignleft' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' : 'align-left'},
+        'aligncenter' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' : 'align-center'},
+        'alignright' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' : 'align-right'},
+        'alignfull' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' : 'align-justify'},
+        'strikethrough' : {'inline' : 'del'},
+        'italic' : {'inline' : 'em'},
+        'bold' : {'inline' : 'strong'},
+        'underline' : {'inline' : 'u'}
+    },
+    'pagebreak_separator' : ""
+}
+
+# Sphinx 0.9.9
+SPHINX_API_VERSION = 0x116

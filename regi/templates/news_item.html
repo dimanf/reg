@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+
+{% block content %} 
+    
+    <p>{{ news_item.title }}</p>
+    <p>{{ news_item.date_create }}</p>
+    <p>{{ news_item.image }}</p>
+    <p>{{ news_item.main_text }}</p>
+    <p>________</p>    
+    <p>Количество просмотров: {{ click_count }}</p>
+
+{% endblock %}

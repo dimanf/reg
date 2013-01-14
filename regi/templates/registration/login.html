@@ -2,6 +2,13 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+Вы же уже авторизорваны как <b>{{ user.username }}</b> 
+<a href="/accounts/logout/">выйти?</a><br/><br/>
+{% else %}
+
+<p>Для того чтобы войти на сайт зарегистрируйтесь, либо введите свой логин и пароль.</p>
+
 {% if form.error %}
     <p class="error">Неверное имя или пароль</p>
 {% endif %}
@@ -16,4 +23,6 @@
     <input type="hidden" name="next" value="{{ next|escape }}" />
 </form>
 
+<a href="/accounts/sendpassword/">Забыли пароль?</a> | <a href="/accounts/registration/">Регистрация</a>
+{% endif %}
 {% endblock %}

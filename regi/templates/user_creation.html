@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+Вы же уже авторизорваны как <b>{{ user.username }}</b> 
+<a href="/accounts/logout/">выйти?</a><br/><br/>
+{% else %}
+
+<p>Колво кликов {{ count_click }}</p>
+
+{% if form.errors %}
+    <p style="color:red">
+        Исправь {{ form.errors }}
+    </p>
+{% endif %}
+
+<p>Если вы уже зарегистрированны, то можете просто <a href="/accounts/login/">войти</a></p>
+
+<form action="" method="post">{% csrf_token %}
+    <div class="field">
+        {{ form.username.label }}
+        {{ form.username }}
+        {{ form.username.errors }}
+    </div>
+    <div class="field">
+        {{ form.email.label }}
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+    <div class="field">
+        {{ form.address.label }}
+        {{ form.address }}
+        {{ form.address.errors }}
+    </div>
+    <div class="field">
+        {{ form.date_of_birth.label }}
+        {{ form.date_of_birth }}
+        {{ form.date_of_birth.errors }}
+    </div>
+    <div class="field">
+        {{ form.password1.label }}
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+    </div>
+    <div class="field">
+        {{ form.password2.label }}
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+    </div>
+    <input type="submit" value="Отправить">   
+</form>
+
+{% endif %}
+
+{% endblock %}
